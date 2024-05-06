@@ -18,7 +18,7 @@ export async function completionCodeClaude() {
   const ANTHROPIC_API_KEY = vscode.workspace.getConfiguration("completioncode").get('ANTHROPIC_API_KEY', "");
   const ANTHROPIC_CLAUDE_MODEL = vscode.workspace.getConfiguration("completioncode").get('ANTHROPIC_CLAUDE_MODEL', "");
 
-  // LLMにコードを送信
+  // 4. LLMにコードを送信
   const anthropic = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
   const messages: MessageParam[] = [{
     role: 'user',
@@ -41,7 +41,7 @@ export async function completionCodeClaude() {
     `
   }];
 
-  // LLMからの返答を取得
+  // 5. LLMからの返答を取得
   const stream = await anthropic.messages.create({
     system: "あなたはコードを補完する専用のシステムです。与えられるファイル名とコードから、適切に補完コードを生成してください。",
     model: ANTHROPIC_CLAUDE_MODEL,
@@ -57,20 +57,20 @@ export async function completionCodeClaude() {
   });
 
 
-  // 補完されたコードのストリームを順次処理
+  // 6. 補完されたコードのストリームを順次処理
   let editPosition = ref.end;
   for await (const messageStreamEvent of stream) {
 
-    // "content_block_delta" のみを処理。それ以外にはメッセージは入ってこない
+    // 7. "content_block_delta" のみを処理。それ以外にはメッセージは入ってこない
     if (messageStreamEvent.type !== "content_block_delta") {
       continue;
     }
 
-    // コードを挿入
+    // 8. コードを挿入
     const content = messageStreamEvent.delta.text || "";
     await insertCode(activeEditor, editPosition, content);
 
-    // 次の挿入位置を計算
+    // 9. 次の挿入位置を計算
     editPosition = nextPosition(editPosition, content);
   }
 }
