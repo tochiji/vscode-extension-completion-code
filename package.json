@@ -1,20 +1,16 @@
 {
-	"enabledApiProposals": [
-		"inlineCompletionsAdditions"
-	],
+	"enabledApiProposals": ["inlineCompletionsAdditions"],
 	"name": "completion-code",
 	"displayName": "completion-code",
 	"description": "コードを補完します",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"engines": {
 		"vscode": "^1.89.0"
 	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"onStartupFinished"
-	],
+	"icon": "logo.png",
+	"publisher": "tochiji",
+	"categories": ["Other"],
+	"activationEvents": ["onStartupFinished"],
 	"main": "./out/extension.js",
 	"contributes": {
 		"configuration": {
@@ -50,6 +46,18 @@
 			{
 				"command": "vscode.contextmenu.completion-code-claude",
 				"title": "選択行にコードを挿入します（Claude）"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "vscode.contextmenu.completion-code-openai",
+				"key": "shift+cmd+o",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "vscode.contextmenu.completion-code-claude",
+				"key": "shift+cmd+a",
+				"when": "editorTextFocus"
 			}
 		],
 		"menus": {
