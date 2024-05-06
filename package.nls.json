@@ -1,0 +1,6 @@
+{
+	"configuration.OPENAI_API_KEY.description": "OpenAIのAPIキーを記入してください",
+	"configuration.OPENAI_API_MODEL.description": "使用するOpenAIのモデルを記入してください\nhttps://platform.openai.com/docs/models/overview",
+	"configuration.ANTHROPIC_API_KEY.description": "anthropicのAPIキーを記入してください",
+	"configuration.ANTHROPIC_CLAUDE_MODEL.description": "使用するClaudeのモデルを記入してください\nhttps://docs.anthropic.com/claude/docs/models-overview"
+}

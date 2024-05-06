@@ -1,0 +1,93 @@
+{
+	"enabledApiProposals": [
+		"inlineCompletionsAdditions"
+	],
+	"name": "completion-code",
+	"displayName": "completion-code",
+	"description": "コードを補完します",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.89.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onStartupFinished"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"configuration": {
+			"title": "completion-code",
+			"properties": {
+				"completioncode.OPENAI_API_KEY": {
+					"type": "string",
+					"default": "",
+					"description": "%configuration.OPENAI_API_KEY.description%"
+				},
+				"completioncode.OPENAI_API_MODEL": {
+					"type": "string",
+					"default": "gpt-4-turbo-2024-04-09",
+					"description": "%configuration.OPENAI_API_MODEL.description%"
+				},
+				"completioncode.ANTHROPIC_API_KEY": {
+					"type": "string",
+					"default": "",
+					"description": "%configuration.ANTHROPIC_API_KEY.description%"
+				},
+				"completioncode.ANTHROPIC_CLAUDE_MODEL": {
+					"type": "string",
+					"default": "claude-3-opus-20240229",
+					"description": "%configuration.ANTHROPIC_CLAUDE_MODEL.description%"
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "vscode.contextmenu.completion-code-openai",
+				"title": "選択行にコードを挿入します（OpenAI）"
+			},
+			{
+				"command": "vscode.contextmenu.completion-code-claude",
+				"title": "選択行にコードを挿入します（Claude）"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"when": "editorFocus",
+					"command": "vscode.contextmenu.completion-code-openai",
+					"group": "myGroup@1"
+				},
+				{
+					"when": "editorFocus",
+					"command": "vscode.contextmenu.completion-code-claude",
+					"group": "myGroup@2"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile",
+		"test": "vscode-test"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.7.2",
+		"@types/mocha": "^10.0.6",
+		"@types/node": "18.x",
+		"@types/vscode": "^1.89.0",
+		"@typescript-eslint/eslint-plugin": "^7.7.1",
+		"@typescript-eslint/parser": "^7.7.1",
+		"@vscode/test-cli": "^0.0.8",
+		"@vscode/test-electron": "^2.3.9",
+		"eslint": "^8.57.0",
+		"typescript": "^5.4.5"
+	},
+	"dependencies": {
+		"@anthropic-ai/sdk": "^0.20.8",
+		"openai": "^4.41.0"
+	}
+}
