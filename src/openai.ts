@@ -26,15 +26,14 @@ export async function completionCodeOpenAI() {
     role: 'user',
     content: `
       次のコード（${languageId}）について、「##### コード挿入場所 #####」に入れるべきコードを考えて、そこに挿入するべきコードのみを生成してください。
-
-      - 生成したコードに対する説明は不要です。コードのみを生成してください。
       - コードの必要な箇所にわかりやすくコメントを入れるなど、コードを読みやすくする工夫は歓迎します。
-      - すでにコード内に書かれている内容は一切生成しないでください。不要です。
-        - ユーザーにとってはコードが重複してしまうので、削除の手間がかかります。
-      - コードを「\`\`\`」などマークダウン記号で囲まないでください。不要です。
 
       ${code}
     `
+  },
+  {
+    role: 'assistant',
+    content: `\`\`\`${languageId}\n`
   }];
 
   // 5. LLMからの返答を取得
@@ -51,13 +50,36 @@ export async function completionCodeOpenAI() {
 
   // 6. 補完されたコードのストリームを順次処理
   let editPosition = ref.end;
+  let buffer = "";
   for await (const messageStreamEvent of stream) {
-
     // 7. コードを挿入
     const content = messageStreamEvent.choices[0].delta.content || "";
-    await insertCode(activeEditor, editPosition, content);
+    buffer += content;
 
-    // 8. 次の挿入位置を計算
-    editPosition = nextPosition(editPosition, content);
+    // 8. 改行が含まれない場合はcontinue
+    if (!buffer.includes("\n")) {
+      continue;
+    }
+
+    // 9. コードブロックを削除したい。bufferのうち、最終改行後の部分を取得。
+    // 例えば、bufferが「aaa\nbbb\nccc」の場合...
+    // lastContentは「ccc」
+    // bufferは「aaa\nbbb\n」
+    const lastNewLineIndex = buffer.lastIndexOf("\n");
+    const lastContent = buffer.slice(lastNewLineIndex + 1);
+    buffer = buffer.slice(0, lastNewLineIndex + 1);
+
+    // 10. コードブロックを削除したい。
+    // もしbufferに「```langname\n」または「```\n」が含まれていれば、その部分を削除
+    buffer = buffer.replace(/```[a-zA-Z0-9]+\n$/, "");
+
+    // 11. コードを挿入
+    await insertCode(activeEditor, editPosition, buffer);
+
+    // 12. 次の挿入位置を計算
+    editPosition = nextPosition(editPosition, buffer);
+
+    // 13. すでに記入したbufferの内容をクリア。lastContentを次のbufferにする。
+    buffer = lastContent;
   }
 }
