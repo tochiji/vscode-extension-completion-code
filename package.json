@@ -45,6 +45,10 @@
 			},
 			{
 				"command": "vscode.contextmenu.completion-code-claude",
+				"title": "選択行にコードを挿入します（Gemini）"
+			},
+			{
+				"command": "vscode.contextmenu.completion-code-claude",
 				"title": "選択行にコードを挿入します（Claude）"
 			}
 		],
