@@ -44,7 +44,7 @@
 				"title": "選択行にコードを挿入します（OpenAI）"
 			},
 			{
-				"command": "vscode.contextmenu.completion-code-claude",
+				"command": "vscode.contextmenu.completion-code-gemini",
 				"title": "選択行にコードを挿入します（Gemini）"
 			},
 			{
@@ -56,6 +56,11 @@
 			{
 				"command": "vscode.contextmenu.completion-code-openai",
 				"key": "shift+cmd+o",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "vscode.contextmenu.completion-code-gemini",
+				"key": "shift+cmd+g",
 				"when": "editorTextFocus"
 			},
 			{
