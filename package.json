@@ -35,6 +35,11 @@
 					"type": "string",
 					"default": "claude-3-opus-20240229",
 					"description": "%configuration.ANTHROPIC_CLAUDE_MODEL.description%"
+				},
+				"completioncode.GEMINI_API_KEY": {
+					"type": "string",
+					"default": "",
+					"description": "%configuration.GEMINI_API_KEY.description%"
 				}
 			}
 		},
@@ -78,8 +83,13 @@
 				},
 				{
 					"when": "editorFocus",
-					"command": "vscode.contextmenu.completion-code-claude",
+					"command": "vscode.contextmenu.completion-code-gemini",
 					"group": "myGroup@2"
+				},
+				{
+					"when": "editorFocus",
+					"command": "vscode.contextmenu.completion-code-claude",
+					"group": "myGroup@3"
 				}
 			]
 		}
